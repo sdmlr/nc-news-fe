@@ -8,6 +8,7 @@ function ArticleDetails() {
   const { article_id } = useParams();
   const [article, setArticle] = useState({});
   const [comments, setComments] = useState([]);
+  const [commentCount, setCommentCount] = useState(0);
   const [voteCount, setVoteCount] = useState(0);
   const [hasUpvoted, setHasUpvoted] = useState(false);
   const [hasDownvoted, setHasDownvoted] = useState(false);
@@ -20,6 +21,7 @@ function ArticleDetails() {
       .then((response) => {
         setArticle(response.data.article);
         setVoteCount(response.data.article.votes);
+        setCommentCount(response.data.article.comment_count)
         setIsLoading(false);
         setIsError(false);
       })
@@ -65,6 +67,14 @@ function ArticleDetails() {
   };
   const handleCommentAdded = (newComment) => {
     setComments((prevComments) => [newComment, ...prevComments]);
+    setCommentCount((prevCount) => prevCount + 1);
+  };
+
+  const handleDelete = (comment_id) => {
+    setComments((prevComments) =>
+      prevComments.filter((comment) => comment.comment_id !== comment_id)
+    );
+    setCommentCount((prevCount) => prevCount - 1);
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -93,11 +103,15 @@ function ArticleDetails() {
         article_id={article_id}
         onCommentAdded={handleCommentAdded}
       />
-      <p>Comments: {article.comment_count}</p>
+      <p>Comments: {commentCount}</p>
       <div className="comments-section">
         {comments.length > 0 ? (
           comments.map((comment) => (
-            <CommentCard key={comment.comment_id} comment={comment} />
+            <CommentCard
+              key={comment.comment_id}
+              comment={comment}
+              onDelete={handleDelete}
+            />
           ))
         ) : (
           <p>No comments yet.</p>
