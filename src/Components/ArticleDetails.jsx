@@ -1,13 +1,14 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CommentCard from "./CommentCard";
+import PostCommentForm from "./PostCommentForm";
+import { fetchArticleById, fetchComments, patchVotes } from "../utils/api";
 
 function ArticleDetails() {
   const { article_id } = useParams();
-  const [article, setArticle] = useState([]);
+  const [article, setArticle] = useState({});
   const [comments, setComments] = useState([]);
-  const [voteCount, setVoteCount] = useState(article.votes);
+  const [voteCount, setVoteCount] = useState(0);
   const [hasUpvoted, setHasUpvoted] = useState(false);
   const [hasDownvoted, setHasDownvoted] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -15,8 +16,7 @@ function ArticleDetails() {
 
   useEffect(() => {
     setIsLoading(true);
-    axios
-      .get(`https://news-project-fe7s.onrender.com/api/articles/${article_id}`)
+    fetchArticleById(article_id)
       .then((response) => {
         setArticle(response.data.article);
         setVoteCount(response.data.article.votes);
@@ -28,11 +28,8 @@ function ArticleDetails() {
         setIsLoading(false);
       });
 
-    //fetching comments from articles
-    axios
-      .get(
-        `https://news-project-fe7s.onrender.com/api/articles/${article_id}/comments`
-      )
+    //fetching comments
+    fetchComments(article_id)
       .then((response) => {
         setComments(response.data.comments);
       })
@@ -41,23 +38,14 @@ function ArticleDetails() {
       });
   }, [article_id]);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error!</p>;
-  if (!article) return null;
-
   const updateVote = (incVote) => {
     const originalCount = voteCount;
 
     setVoteCount((prevCount) => prevCount + incVote);
 
-    axios
-      .patch(
-        `https://news-project-fe7s.onrender.com/api/articles/${article_id}`,
-        { inc_votes: incVote }
-      )
-      .catch((err) => {
-        setVoteCount(originalCount);
-      });
+    patchVotes().catch((err) => {
+      setVoteCount(originalCount);
+    });
   };
 
   const handleUpvote = () => {
@@ -75,6 +63,13 @@ function ArticleDetails() {
       updateVote(hasUpvoted ? -2 : -1);
     }
   };
+  const handleCommentAdded = (newComment) => {
+    setComments((prevComments) => [newComment, ...prevComments]);
+  };
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error!</p>;
+  if (!article) return null;
 
   return (
     <div className="article-details">
@@ -94,6 +89,10 @@ function ArticleDetails() {
         </button>
       </div>
       <h3>Comments</h3>
+      <PostCommentForm
+        article_id={article_id}
+        onCommentAdded={handleCommentAdded}
+      />
       <p>Comments: {article.comment_count}</p>
       <div className="comments-section">
         {comments.length > 0 ? (

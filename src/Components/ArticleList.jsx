@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ArticleCard from "./ArticleCard";
+import { fetchArticles } from "../utils/api";
 
 function ArticleList() {
   const [articles, setArticles] = useState([]);
@@ -11,7 +12,7 @@ function ArticleList() {
     setIsLoading(true);
 
     axios
-      .get("https://news-project-fe7s.onrender.com/api/articles")
+    fetchArticles()
       .then((response) => {
         setArticles(response.data.articles);
         setIsLoading(false);
@@ -30,7 +31,11 @@ function ArticleList() {
   return (
     <>
       <h2>Article List</h2>
-      <ArticleCard articles={articles} />
+      {articles.map((article) => (
+        <li key={article.article_id}>
+          <ArticleCard article={article} />
+        </li>
+      ))}
     </>
   );
 }
