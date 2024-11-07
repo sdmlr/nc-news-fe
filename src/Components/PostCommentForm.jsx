@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { postComment } from "../utils/api";
 
-function PostCommentForm({ article_id, onCommentAdded }) {
+function PostCommentForm({ article_id }) {
   const [commentText, setCommentText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [commentCount, setCommentCount] = useState(0);
+
+  const handleCommentAdded = (newComment) => {
+    setComments((prevComments) => [newComment, ...prevComments]);
+    setCommentCount((prevCount) => prevCount + 1);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,7 +30,7 @@ function PostCommentForm({ article_id, onCommentAdded }) {
 
     postComment(article_id, newComment)
       .then((response) => {
-        onCommentAdded(response.data.comment);
+        handleCommentAdded(response.data.comment);
         setCommentText("");
       })
       .catch((err) => {

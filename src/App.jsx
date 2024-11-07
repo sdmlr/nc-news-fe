@@ -4,6 +4,7 @@ import Home from "./Components/Home";
 import ArticleDetails from "./Components/ArticleDetails";
 import ArticleList from "./Components/ArticleList";
 import "./App.css";
+import TopicArticles from "./Components/TopicArticles";
 
 function App() {
   return (
