@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 function ArticleCard({ article }) {
   return (
-    <>
-      <ul className="article-list">
+    <div>
+      <ul>
         <div className="article-card">
           <Link to={`/articles/${article.article_id}`} className="article-link">
             <img
@@ -17,11 +17,12 @@ function ArticleCard({ article }) {
               <p>Author: {article.author}</p>
               <p>Topic: {article.topic}</p>
               <p>Comments: {article.comment_count}</p>
+              <p>Votes: {article.votes}</p>
             </div>
           </Link>
         </div>
       </ul>
-    </>
+    </div>
   );
 }
 

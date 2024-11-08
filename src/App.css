@@ -14,16 +14,21 @@ header {
 }
 
 .article-list {
-  list-style-type: none;
-  padding: 20px;
-  margin: 0;
+  margin-left: 17%;
+  margin-right: 17%;
 }
 
 .article-card {
+  width: 700px;
   display: flex;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+  align-items: left;
+  flex-direction: column;
+  padding: 0px;
+  transition: transform 0.2s;
+}
+
+.article-card:hover {
+  transform: scale(1.02);
 }
 
 .article-link {
@@ -34,19 +39,46 @@ header {
 }
 
 .article-content {
-  flex-grow: 1;
+flex-grow: 1;
 }
 
 .article-img {
-  width: 250px;
+  /* display: block; */
+  width: 350px;
   height: auto;
+  text-align: center;
   margin-right: 15px;
   border-radius: 5px;
+  justify-content: center;
 }
+
 
 .article-details {
   margin-left: 20%;
   margin-right: 20%;
+}
+
+.article-page-container {
+}
+
+.sorting-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.sorting-container select,
+.sorting-container button {
+  padding: 0.3rem;
+  font-size: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.sorting-container button:hover,
+.sorting-container select:hover {
+  background-color: #f0f0f0;
 }
 
 .comments-section {
@@ -73,10 +105,48 @@ header {
   cursor: pointer;
 }
 
-
 .vote-count {
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.topic-list-container {
+  text-align: center;
+}
+
+.topic-list {
+  text-align: center;
+}
+
+.topic-card-container {
+  justify-content: center;
+}
+
+.topic-card {
+  margin: 1%;
+  width: 300px;
+  height: 350px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.topic-card:hover {
+  transform: scale(1.05);
+}
+
+.topic-image {
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  border-radius: 6px;
+}
+
+#all-articles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 }
 
 #nav {
@@ -90,6 +160,8 @@ header {
 }
 
 h2 {
+  font-size: xx-large;
+  text-align: center;
   color: #333;
 }
 
@@ -118,9 +190,5 @@ img {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-  }
-
-  li {
-    flex: 1 1 calc(33.333% - 2rem);
   }
 }
