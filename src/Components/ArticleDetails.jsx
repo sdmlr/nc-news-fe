@@ -7,9 +7,9 @@ import { fetchArticleById, fetchComments, patchVotes } from "../utils/api";
 function ArticleDetails() {
   const { article_id } = useParams();
   const [article, setArticle] = useState({});
+  const [voteCount, setVoteCount] = useState(0);
   const [comments, setComments] = useState([]);
   const [commentCount, setCommentCount] = useState(0);
-  const [voteCount, setVoteCount] = useState(0);
   const [hasUpvoted, setHasUpvoted] = useState(false);
   const [hasDownvoted, setHasDownvoted] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -45,7 +45,7 @@ function ArticleDetails() {
 
     setVoteCount((prevCount) => prevCount + incVote);
 
-    patchVotes().catch((err) => {
+    patchVotes(article_id, incVote).catch((err) => {
       setVoteCount(originalCount);
     });
   };
@@ -64,10 +64,6 @@ function ArticleDetails() {
       setHasUpvoted(false);
       updateVote(hasUpvoted ? -2 : -1);
     }
-  };
-  const handleCommentAdded = (newComment) => {
-    setComments((prevComments) => [newComment, ...prevComments]);
-    setCommentCount((prevCount) => prevCount + 1);
   };
 
   const handleDelete = (comment_id) => {
@@ -101,7 +97,6 @@ function ArticleDetails() {
       <h3>Comments</h3>
       <PostCommentForm
         article_id={article_id}
-        onCommentAdded={handleCommentAdded}
       />
       <p>Comments: {commentCount}</p>
       <div className="comments-section">
