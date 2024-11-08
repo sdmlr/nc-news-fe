@@ -12,8 +12,9 @@ function ArticleDetails() {
   const [commentCount, setCommentCount] = useState(0);
   const [hasUpvoted, setHasUpvoted] = useState(false);
   const [hasDownvoted, setHasDownvoted] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorStatus, setErrorStatus] = useState(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -37,6 +38,7 @@ function ArticleDetails() {
       })
       .catch((err) => {
         setIsError(true);
+        setErrorStatus(err.response?.status || 500)
       });
   }, [article_id]);
 
@@ -74,7 +76,7 @@ function ArticleDetails() {
   };
 
   if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error!</p>;
+  if (isError && errorStatus === 404) return <p>Article not found</p>;
   if (!article) return null;
 
   return (

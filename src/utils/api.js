@@ -2,17 +2,32 @@ import axios from "axios";
 
 const apiBase = "https://news-project-fe7s.onrender.com/api";
 
-export const fetchArticles = () => {
-  return axios.get(`${apiBase}/articles`);
+export const fetchArticles = (sortField = "created_at", sortOrder = "desc") => {
+  return axios.get(`${apiBase}/articles`, {
+    params: {
+      sort_by: sortField,
+      order: sortOrder,
+    },
+  });
 };
 
 export const fetchArticleById = (article_id) => {
   return axios.get(`${apiBase}/articles/${article_id}`);
 };
 
-export const fetchArticlesByTopic = (topic) => {
-  return axios.get(`${apiBase}/articles?topic=${topic}`)
-}
+export const fetchArticlesByTopic = (
+  topic,
+  sortField = "created_at",
+  sortOrder = "desc"
+) => {
+  return axios.get(`${apiBase}/articles`, {
+    params: {
+      topic: topic,
+      sort_by: sortField,
+      order: sortOrder,
+    },
+  });
+};
 
 export const fetchComments = (article_id) => {
   return axios.get(`${apiBase}/articles/${article_id}/comments`);

@@ -15,7 +15,7 @@ function PostCommentForm({ article_id }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!commentText) {
+    if (!commentText.trim()) {
       setIsError("Enter text before submitting");
       return;
     }
@@ -52,6 +52,7 @@ function PostCommentForm({ article_id }) {
       <button type="submit" disabled={isSubmitting}>
         {isSubmitting ? "Posting..." : "Post Comment"}
       </button>
+      {isError && <p>{isError}</p>}
     </form>
   );
 }
