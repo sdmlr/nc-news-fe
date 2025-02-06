@@ -1,4 +1,4 @@
-# Project Name
+# NC News (frontend)
 
 ## Overview
 This is a news web application where users can view, sort, and interact with articles on various topics. Users can navigate by topics, view articles, post comments, and sort articles by different criteria such as date, votes, and comments.
